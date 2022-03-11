@@ -5,9 +5,9 @@ Forth interpreter in Golang
 $ go run main.go
 ```
 # Features
-* []: # Read from stdin
-* []: # Read from file
-* []: # Raw mode for input (still need some fixes)
+- [x] # Read from stdin
+- [x] # Read from file
+- [x] # Raw mode for input
 # TODO
-* []: fix raw mode when entering multiple numbers
-* []: fix raw mode when creating a new word
+- [ ] fix raw mode when entering multiple numbers
+- [ ] fix raw mode when creating a new word
