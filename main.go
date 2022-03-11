@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // interpret check the words to execute it
 func interpret(w string, gw *Words) {
+	println("processing:", w)
 	// is number
 	if n, err := strconv.Atoi(w); err == nil {
 		stack.push(n)
@@ -48,7 +50,7 @@ func interpret(w string, gw *Words) {
 			for {
 				gw.next()
 				w = gw.current
-				if w == ";" {
+				if strings.Contains(w, ";") {
 					break
 				}
 				word = append(word, w)
@@ -56,6 +58,20 @@ func interpret(w string, gw *Words) {
 			dictionary[word[0]] = word[1:]
 		} else if w == "words" {
 			fmt.Println(dictionary)
+		} else if w == `\"` { // print string
+			str := ""
+			for {
+				gw.next()
+				w = gw.current
+				for c := range w {
+					if w[c] == '"' {
+						fmt.Println(str)
+						return
+					}
+					str += string(w[c])
+				}
+				str += " "
+			}
 		}
 	}
 }

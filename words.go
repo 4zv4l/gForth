@@ -49,7 +49,7 @@ func (w Words) get() []string {
 				} else {
 					println("  ?")
 				}
-				println("words:", word)
+				fmt.Println("words:", words)
 				return words
 			}
 			if key == keyboard.KeySpace {
