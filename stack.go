@@ -92,11 +92,15 @@ func (s *Stack) div() {
 // get a char from stdin
 // put the ascii code on the stack
 func (s *Stack) key() {
-	char, _, err := keyboard.GetSingleKey()
+	char, key, err := keyboard.GetSingleKey()
 	if err != nil {
 		panic(err)
 	}
-	s.push(int(char))
+	if key == keyboard.KeySpace {
+		s.push(32)
+	} else {
+		s.push(int(char))
+	}
 }
 
 // dup dupliate the top of the stack
@@ -184,14 +188,19 @@ func (s *Stack) isLess() {
 }
 
 func (s *Stack) isNot() {
-	n, err := s.pop()
+	n1, err := s.pop()
 	if err != nil {
 		println(err.Error())
 		return
 	}
-	if n == 0 {
-		s.push(-1)
-	} else {
+	n2, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	if n1 != n2 {
 		s.push(0)
+	} else {
+		s.push(-1)
 	}
 }

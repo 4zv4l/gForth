@@ -1,9 +1,0 @@
-: GREET ." Hiiii" ;
-: isEqual = branch? ." Equal !" then ;
-GREET cr
-2 3
-print
-isEqual
-4 4
-print
-isEqual

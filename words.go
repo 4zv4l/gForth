@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"io"
+	"os"
 	"strings"
 )
 
@@ -14,9 +15,13 @@ type Words struct {
 
 // get words from user input
 // return each word in an array
-func (w Words) get() []string {
+func (w *Words) get() []string {
 	words, err := w.scan.ReadString('\n')
 	if err != nil {
+		if err == io.EOF {
+			w.scan = bufio.NewReader(os.Stdin)
+			return w.get()
+		}
 		return []string{"bye"}
 	}
 	words = strings.Trim(words, "\n")

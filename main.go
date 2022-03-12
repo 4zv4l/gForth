@@ -124,7 +124,6 @@ func interpret(w string, gw *Words) {
 					// do not interpret
 				}
 			}
-			return
 		}
 	}
 }
