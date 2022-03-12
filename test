@@ -1,11 +1,9 @@
-." Please enter your name : "
-key dup emit
-key dup emit
-key dup emit
-key dup emit
-key dup emit
-cr
-\" Hi "
-emit emit emit emit emit
-cr
-bye
+: GREET ." Hiiii" ;
+: isEqual = branch? ." Equal !" then ;
+GREET cr
+2 3
+print
+isEqual
+4 4
+print
+isEqual
