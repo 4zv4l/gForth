@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+
 	"github.com/eiannone/keyboard"
 )
 
@@ -17,42 +19,69 @@ func (s *Stack) push(n int) {
 
 // pop a number from the stack
 // return that number
-func (s *Stack) pop() int {
+func (s *Stack) pop() (int, error) {
+	if len(s.data) == 0 {
+		return 0, errors.New("Stack underflow")
+	}
 	l := len(s.data) - 1
 	r := s.data[l]
 	s.data = s.data[:l]
-	return r
-}
-
-// all builtin command here
-var builtin = []string{"+", "-", "*", "/", "drop", "dup", ".", "show", "key", "emit", "cr", "bye"}
-
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
+	return r, nil
 }
 
 func (s *Stack) add() {
-	s.push(s.pop() + s.pop())
+	n1, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	n2, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	s.push(n1 + n2)
 }
 
 func (s *Stack) sub() {
-	n1 := s.pop()
-	n2 := s.pop()
-	s.push(n1 - n2)
+	n1, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	n2, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	s.push(n2 - n1)
 }
 
 func (s *Stack) mul() {
-	s.push(s.pop() * s.pop())
+	n1, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	n2, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	s.push(n1 * n2)
 }
 
 func (s *Stack) div() {
-	n1 := s.pop()
-	n2 := s.pop()
+	n1, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	n2, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
 	if n1 == 0 {
 		println("Divide by zero")
 		return
@@ -72,7 +101,97 @@ func (s *Stack) key() {
 
 // dup dupliate the top of the stack
 func (s *Stack) dup() {
-	v := s.pop()
+	v, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
 	s.push(v)
 	s.push(v)
+}
+
+// swap the top two value
+func (s *Stack) swap() {
+	n1, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	n2, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	s.push(n1)
+	s.push(n2)
+}
+
+// 0 = trye
+// -1 = false
+
+func (s *Stack) isEqual() {
+	n1, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	n2, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	if n1 == n2 {
+		s.push(0)
+	} else {
+		s.push(-1)
+	}
+}
+
+func (s *Stack) isGreater() {
+	n1, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	n2, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	if n1 > n2 {
+		s.push(0)
+	} else {
+		s.push(-1)
+	}
+}
+
+func (s *Stack) isLess() {
+	n1, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	n2, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	if n1 < n2 {
+		s.push(0)
+	} else {
+		s.push(-1)
+	}
+}
+
+func (s *Stack) isNot() {
+	n, err := s.pop()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	if n == 0 {
+		s.push(-1)
+	} else {
+		s.push(0)
+	}
 }
